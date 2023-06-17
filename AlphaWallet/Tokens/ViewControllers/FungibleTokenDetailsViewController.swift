@@ -16,6 +16,7 @@ protocol FungibleTokenDetailsViewControllerDelegate: AnyObject, CanOpenURL {
     func didTapSend(for token: Token, in viewController: FungibleTokenDetailsViewController)
     func didTapReceive(for token: Token, in viewController: FungibleTokenDetailsViewController)
     func didTap(action: TokenInstanceAction, token: Token, in viewController: FungibleTokenDetailsViewController)
+    func didTapTokens(in viewController: FungibleTokenDetailsViewController)
 }
 
 class FungibleTokenDetailsViewController: UIViewController {
@@ -176,7 +177,7 @@ class FungibleTokenDetailsViewController: UIViewController {
         case .buy(let token, let service):
             delegate?.didTapBuy(for: token, service: service, in: self)
         case .token:
-            print("execute token logic here")
+            delegate?.didTapTokens(in: self)
         }
     }
 

@@ -21,6 +21,7 @@ protocol SingleChainTokenCoordinatorDelegate: CanOpenURL, SendTransactionDelegat
     func didPostTokenScriptTransaction(_ transaction: SentTransaction, in coordinator: SingleChainTokenCoordinator)
     func didTapAddAlert(for token: Token, in coordinator: SingleChainTokenCoordinator)
     func didTapEditAlert(for token: Token, alert: PriceAlert, in coordinator: SingleChainTokenCoordinator)
+    func didTapTokens(in coordinator: SingleChainTokenCoordinator)
 }
 
 class SingleChainTokenCoordinator: Coordinator {
@@ -167,6 +168,10 @@ extension SingleChainTokenCoordinator: FungibleTokenCoordinatorDelegate {
         delegate?.didTap(activity: activity, viewController: viewController, in: self)
     }
 
+    func didTapTokens(in coordinator: FungibleTokenCoordinator) {
+        delegate?.didTapTokens(in: self)
+    }
+    
     func didClose(in coordinator: FungibleTokenCoordinator) {
         removeCoordinator(coordinator)
     }

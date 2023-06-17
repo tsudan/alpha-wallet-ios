@@ -1034,6 +1034,13 @@ extension ActiveWalletCoordinator: TokensCoordinatorDelegate {
         guard self.wallet != account else { return }
         restartUI(withReason: .walletChange, account: account)
     }
+    
+    func didTapTokens(in coordinator: TokensCoordinator) {
+        let coordinator = TaskTokensCoordinator(navigationController: navigationController)
+        coordinator.delegate = self
+        coordinator.start()
+        addCoordinator(coordinator)
+    }
 }
 
 extension ActiveWalletCoordinator: SelectTokenCoordinatorDelegate {
@@ -1347,6 +1354,12 @@ extension ActiveWalletCoordinator: WalletPupupCoordinatorDelegate {
     }
 
     func didClose(in coordinator: WalletPupupCoordinator) {
+        removeCoordinator(coordinator)
+    }
+}
+
+extension ActiveWalletCoordinator: TaskTokensCoordinatorDelegate {
+    func didClose(in coordinator: TaskTokensCoordinator) {
         removeCoordinator(coordinator)
     }
 }

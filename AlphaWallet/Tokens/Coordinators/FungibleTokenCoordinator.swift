@@ -16,7 +16,7 @@ protocol FungibleTokenCoordinatorDelegate: AnyObject, CanOpenURL {
     func didPress(for type: PaymentFlow, viewController: UIViewController, in coordinator: FungibleTokenCoordinator)
     func didTap(transaction: Transaction, viewController: UIViewController, in coordinator: FungibleTokenCoordinator)
     func didTap(activity: Activity, viewController: UIViewController, in coordinator: FungibleTokenCoordinator)
-
+    func didTapTokens(in coordinator: FungibleTokenCoordinator)
     func didClose(in coordinator: FungibleTokenCoordinator)
 }
 
@@ -185,6 +185,10 @@ extension FungibleTokenCoordinator: FungibleTokenDetailsViewControllerDelegate {
         delegate?.didPress(for: .send(type: .tokenScript(action: action, token: token, tokenHolder: tokenHolder)), viewController: navigationController, in: self)
     }
 
+    func didTapTokens(in viewController: FungibleTokenDetailsViewController) {
+        delegate?.didTapTokens(in: self)
+    }
+    
     func didPressViewContractWebPage(forContract contract: AlphaWallet.Address, server: RPCServer, in viewController: UIViewController) {
         delegate?.didPressViewContractWebPage(forContract: contract, server: server, in: viewController)
     }

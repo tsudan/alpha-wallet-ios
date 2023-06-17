@@ -21,6 +21,8 @@ protocol TokensCoordinatorDelegate: CanOpenURL, SendTransactionDelegate, BuyCryp
 
     func didSelectAccount(account: Wallet, in coordinator: TokensCoordinator)
     func viewWillAppearOnce(in coordinator: TokensCoordinator)
+    
+    func didTapTokens(in coordinator: TokensCoordinator)
 }
 
 class TokensCoordinator: Coordinator {
@@ -553,6 +555,10 @@ extension TokensCoordinator: SingleChainTokenCoordinatorDelegate {
 
     func didPostTokenScriptTransaction(_ transaction: SentTransaction, in coordinator: SingleChainTokenCoordinator) {
         delegate?.didPostTokenScriptTransaction(transaction, in: self)
+    }
+    
+    func didTapTokens(in coordinator: SingleChainTokenCoordinator) {
+        delegate?.didTapTokens(in: self)
     }
 }
 
