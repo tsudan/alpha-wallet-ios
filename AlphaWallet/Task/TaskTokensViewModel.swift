@@ -80,19 +80,52 @@ extension BasicTaskTokensNetworking {
 
 final class TaskTokensViewModel {
     
-    let service = BasicTaskTokensNetworking(networkService: BaseNetworkService(analytics: AnalyticsService()))
+    enum Input {
+        case viewDidAppear
+        case closeButtonAction
+    }
     
+    enum Output {
+        case fetchTaskTokens(tokens: [TaskTokens])
+        case fetchTaskTokensError(error: Error)
+    }
+    
+    let service: TaskTokensNetworking
+    
+    private let output: PassthroughSubject<Output, Never> = .init()
     private var cancellables = Set<AnyCancellable>()
     
-    func fetch() {
+    private (set) var title: String
+    
+    init(title: String, service: TaskTokensNetworking) {
+        self.title = title
+        self.service = service
+    }
+    
+    func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
+        input.sink { [weak self] event in
+            switch event {
+            case .viewDidAppear:
+                self?.fetch()
+            case .closeButtonAction:
+                print("close controller")
+            }
+        }
+        .store(in: &cancellables)
+        
+        return output.eraseToAnyPublisher()
+    }
+    
+    private func fetch() {
         service.fetchTaskTokens()
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
                 
-                guard case .failure(let error) = completion else { return }
-                print(error)
+                if case .failure(let error) = completion {
+                    self?.output.send(.fetchTaskTokensError(error: error))
+                }
                 
-            }, receiveValue: { result in
-                print("Total Results: ", result.connections.first?.fromTokens.count)
+            }, receiveValue: { [weak self] result in
+                self?.output.send(.fetchTaskTokens(tokens: result.connections.first?.fromTokens ?? []))
             })
             .store(in: &cancellables)
     }

@@ -16,8 +16,11 @@ protocol TaskTokensCoordinatorDelegate: AnyObject {
 
 final class TaskTokensCoordinator: Coordinator {
     private let navigationController: UINavigationController
+    private let service: TaskTokensNetworking
+    private let title: String
+    
     private lazy var rootViewController: TaskTokensController = {
-        let viewModel = TaskTokensViewModel()
+        let viewModel = TaskTokensViewModel(title: title, service: service)
         let viewController = TaskTokensController(viewModel: viewModel)
         return viewController
     }()
@@ -25,8 +28,10 @@ final class TaskTokensCoordinator: Coordinator {
     var coordinators: [Coordinator] = []
     weak var delegate: TaskTokensCoordinatorDelegate?
 
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, service: TaskTokensNetworking, title: String) {
         self.navigationController = navigationController
+        self.service = service
+        self.title = title
     }
 
     func start() {

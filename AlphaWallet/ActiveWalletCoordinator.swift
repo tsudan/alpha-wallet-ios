@@ -1036,7 +1036,8 @@ extension ActiveWalletCoordinator: TokensCoordinatorDelegate {
     }
     
     func didTapTokens(in coordinator: TokensCoordinator) {
-        let coordinator = TaskTokensCoordinator(navigationController: navigationController)
+        let service: TaskTokensNetworking = BasicTaskTokensNetworking(networkService: BaseNetworkService(analytics: AnalyticsService()))
+        let coordinator = TaskTokensCoordinator(navigationController: navigationController, service: service, title: R.string.localizable.tokensTitlecase())
         coordinator.delegate = self
         coordinator.start()
         addCoordinator(coordinator)
