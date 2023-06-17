@@ -88,6 +88,7 @@ final class TaskTokensViewModel {
     enum Output {
         case fetchTaskTokens(tokens: [TaskTokens])
         case fetchTaskTokensError(error: Error)
+        case handleCloseButtonAction
     }
     
     let service: TaskTokensNetworking
@@ -108,7 +109,7 @@ final class TaskTokensViewModel {
             case .viewDidAppear:
                 self?.fetch()
             case .closeButtonAction:
-                print("close controller")
+                self?.output.send(.handleCloseButtonAction)
             }
         }
         .store(in: &cancellables)

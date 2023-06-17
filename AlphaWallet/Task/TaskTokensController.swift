@@ -8,10 +8,23 @@
 import UIKit
 import Combine
 
+protocol TaskTokensControllerDelegate: AnyObject {
+    func didTapClose(on: TaskTokensController)
+}
+
 class TaskTokensController: UIViewController {
 
-    private lazy var closeButton: UIButton = {
-        let button = UIButton()
+    @objc private func onCloseButtonTap(_ sender: UIButton) {
+        input.send(.closeButtonAction)
+    }
+    
+    private lazy var closeButton: Button = {
+        let button = Button(size: .normal, style: .borderless)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(R.image.close(), for: .normal)
+        button.heightConstraint.flatMap { NSLayoutConstraint.deactivate([$0]) }
+
+        button.addTarget(self, action: #selector(self.onCloseButtonTap(_:)), for: .primaryActionTriggered)
         
         return button
     }()
@@ -28,12 +41,6 @@ class TaskTokensController: UIViewController {
         return tableView
     }()
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        
-        return label
-    }()
-    
     private let viewModel: TaskTokensViewModel
     
     private let input: PassthroughSubject<TaskTokensViewModel.Input, Never> = .init()
@@ -41,6 +48,8 @@ class TaskTokensController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     private var taskTokens: [TaskTokens] = []
+    
+    weak var delegate: TaskTokensControllerDelegate?
     
     init(viewModel: TaskTokensViewModel) {
         self.viewModel = viewModel
@@ -52,6 +61,10 @@ class TaskTokensController: UIViewController {
         NSLayoutConstraint.activate([
             tableView.anchorsIgnoringBottomSafeArea(to: view)
         ])
+        
+        let barButtonItem = UIBarButtonItem(customView: closeButton)
+        
+        navigationItem.rightBarButtonItems = [barButtonItem]
     }
     
     required init?(coder: NSCoder) {
@@ -86,6 +99,10 @@ class TaskTokensController: UIViewController {
                     self?.tableView.reloadData()
                 case .fetchTaskTokensError(let error):
                     print(error.localizedDescription)
+                case .handleCloseButtonAction:
+                    if let strongSelf = self {
+                        strongSelf.delegate?.didTapClose(on: strongSelf)
+                    }
                 }
             }
             .store(in: &cancellables)
