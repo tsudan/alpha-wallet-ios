@@ -90,7 +90,7 @@ class TokenScriptCoordinator: Coordinator {
                 //TODO need to handle this for no-view cards too?
                 subscribeForEthereumEventChanges()
             }
-        case .erc20Send, .erc20Receive, .nftRedeem, .nftSell, .nonFungibleTransfer, .swap, .bridge, .buy:
+        case .erc20Send, .erc20Receive, .nftRedeem, .nftSell, .nonFungibleTransfer, .swap, .bridge, .buy, .token:
             assertImpossibleCodePath(message: "Should only be TokenScript actions")
         }
     }

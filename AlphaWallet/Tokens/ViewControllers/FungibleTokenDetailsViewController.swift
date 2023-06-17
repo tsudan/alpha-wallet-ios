@@ -175,6 +175,8 @@ class FungibleTokenDetailsViewController: UIViewController {
             delegate?.didTapBridge(for: token, service: service, in: self)
         case .buy(let token, let service):
             delegate?.didTapBuy(for: token, service: service, in: self)
+        case .token:
+            print("execute token logic here")
         }
     }
 

@@ -109,6 +109,7 @@ final class FungibleTokenDetailsViewModel {
             }
         case .bridge(let service): return .bridge(token: token, service: service)
         case .buy(let service): return .buy(token: token, service: service)
+        case .token: return .token
         }
     }
 
@@ -293,5 +294,6 @@ extension FungibleTokenDetailsViewModel {
         case bridge(token: Token, service: TokenActionProvider)
         case buy(token: Token, service: TokenActionProvider)
         case display(warning: String)
+        case token
     }
 }

@@ -155,7 +155,7 @@ class NFTAssetViewModel {
             return .redeem(token: token, tokenHolder: tokenHolder)
         case .nftSell:
             return .sell(tokenHolder: tokenHolder)
-        case .erc20Send, .erc20Receive, .swap, .buy, .bridge:
+        case .erc20Send, .erc20Receive, .swap, .buy, .bridge, .token:
             //TODO when we support TokenScript views for ERC20s, we need to perform the action here
             return nil
         case .nonFungibleTransfer:
@@ -377,6 +377,8 @@ extension TokenInstanceAction {
             return service.action
         case .bridge(let service):
             return service.action
+        case .token:
+            return R.string.localizable.tokensTitlecase()
         }
     }
 }

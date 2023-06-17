@@ -41,11 +41,12 @@ public struct TokenInstanceAction {
         case swap(service: TokenActionProvider)
         case bridge(service: TokenActionProvider)
         case buy(service: TokenActionProvider)
+        case token
     }
 
     public var attributes: [AttributeId: AssetAttribute] {
         switch type {
-        case .erc20Send, .erc20Receive, .swap, .buy, .bridge:
+        case .erc20Send, .erc20Receive, .swap, .buy, .bridge, .token:
             return .init()
         case .nftRedeem, .nftSell, .nonFungibleTransfer:
             return .init()
@@ -75,7 +76,7 @@ public struct TokenInstanceAction {
     }
     public var transactionFunction: FunctionOrigin? {
         switch type {
-        case .erc20Send, .erc20Receive, .swap, .buy, .bridge:
+        case .erc20Send, .erc20Receive, .swap, .buy, .bridge, .token:
             return nil
         case .nftRedeem, .nftSell, .nonFungibleTransfer:
             return nil
@@ -85,7 +86,7 @@ public struct TokenInstanceAction {
     }
     public var contract: AlphaWallet.Address? {
         switch type {
-        case .erc20Send, .erc20Receive, .swap, .buy, .bridge:
+        case .erc20Send, .erc20Receive, .swap, .buy, .bridge, .token:
             return nil
         case .nftRedeem, .nftSell, .nonFungibleTransfer:
             return nil
@@ -104,7 +105,7 @@ public struct TokenInstanceAction {
     //TODO we can live-reload the action view screen now if we observe for changes
     public func viewHtml(tokenId: TokenId) -> String {
         switch type {
-        case .erc20Send, .erc20Receive, .swap, .buy, .bridge, .nonFungibleTransfer, .nftRedeem, .nftSell:
+        case .erc20Send, .erc20Receive, .swap, .buy, .bridge, .token, .nonFungibleTransfer, .nftRedeem, .nftSell:
             return ""
         case .tokenScript(_, _, (html: let html, style: let style), _, _, _):
             return wrapWithHtmlViewport(html: html, style: style, forTokenId: tokenId)
@@ -113,7 +114,7 @@ public struct TokenInstanceAction {
 
     public func activeExcludingSelection(selectedTokenHolders: [TokenHolder], forWalletAddress walletAddress: AlphaWallet.Address, fungibleBalance: BigUInt? = nil) -> TokenScriptSelection? {
         switch type {
-        case .erc20Send, .erc20Receive, .swap, .buy, .bridge:
+        case .erc20Send, .erc20Receive, .swap, .buy, .bridge, .token:
             return nil
         case .nftRedeem, .nftSell, .nonFungibleTransfer:
             return nil
@@ -133,7 +134,7 @@ public struct TokenInstanceAction {
 
     public func activeExcludingSelection(selectedTokenHolder tokenHolder: TokenHolder, tokenId: TokenId, forWalletAddress walletAddress: AlphaWallet.Address, fungibleBalance: BigUInt? = nil) -> TokenScriptSelection? {
         switch type {
-        case .erc20Send, .erc20Receive, .swap, .buy, .bridge:
+        case .erc20Send, .erc20Receive, .swap, .buy, .bridge, .token:
             return nil
         case .nftRedeem, .nftSell, .nonFungibleTransfer:
             return nil

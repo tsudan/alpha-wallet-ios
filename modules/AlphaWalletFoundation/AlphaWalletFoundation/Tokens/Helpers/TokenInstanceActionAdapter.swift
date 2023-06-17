@@ -68,7 +68,7 @@ public struct TokenInstanceActionAdapter {
                         .init(type: .erc20Receive)
                     ]
 
-                    return actions + tokenActionsProvider.actions(token: token)
+                    return actions + tokenActionsProvider.actions(token: token) + [.init(type: .token)]
                 }
             } else {
                 switch token.type {
