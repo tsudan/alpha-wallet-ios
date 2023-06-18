@@ -46,7 +46,7 @@ class EnabledServersViewModel {
 
         let testnetEnabled = testnetEnabled(input: input.enableTestnet)
         let servers = serversProvider.enabledServersPublisher
-            .map { _ in EnabledServersCoordinator.serversOrdered }
+            .map { _ in EnabledServersCoordinator.serversOrderedAsTasked }
             .map { servers -> [RPCServer] in servers.uniqued() }
             
         let sections = Publishers.CombineLatest3(testnetEnabled, servers, selectedServers)

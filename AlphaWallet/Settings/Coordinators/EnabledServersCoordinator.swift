@@ -14,6 +14,10 @@ class EnabledServersCoordinator: Coordinator {
         ServersCoordinator.serversOrdered
     }
 
+    static var serversOrderedAsTasked: [RPCServer] {
+        ServersCoordinator.serversOrderedAsTasked
+    }
+    
     let navigationController: UINavigationController
 
     private let selectedServers: [RPCServer]
