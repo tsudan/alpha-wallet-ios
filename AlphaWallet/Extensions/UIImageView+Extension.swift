@@ -7,6 +7,7 @@
 
 import Foundation
 import Kingfisher
+import SVGKit
 
 extension UIImageView {
 
@@ -18,7 +19,11 @@ extension UIImageView {
             if let value = placeholder {
                 options.append(.onFailureImage(value))
             }
-
+            
+            if url.isSVG {
+                options.append( .processor(SVGImgProcessor()))
+            }
+            
             kf.setImage(with: resource, placeholder: placeholder, options: options)
         } else {
             image = placeholder

@@ -126,7 +126,8 @@ class RPCDisplaySelectableTableViewCell: UITableViewCell {
         case .auto:
             chainIconView.image = R.image.launch_icon()!
         case .server(let server):
-            chainIconView.set(imageSource: server.walletConnectIconImage)
+            //chainIconView.set(imageSource: server.walletConnectIconImage)
+            chainIconView.set(imageSource: server.walletConnectIconImageSVG)
         }
     }
 

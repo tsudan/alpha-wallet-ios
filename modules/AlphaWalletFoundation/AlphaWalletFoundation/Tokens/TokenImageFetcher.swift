@@ -304,6 +304,18 @@ public class RPCServerImageFetcher {
             return sub.eraseToAnyPublisher()
         }
     }
+    
+    public func svgImage(server: RPCServer, iconImage: UIImage) -> ImagePublisher {
+        if let sub = subscribables[server.chainID] {
+            return sub
+        } else {
+            let sub = CurrentValueSubject<ImageOrWebImageUrl<Image>?, Never>(.url(.origin(URL(string: "https://assets.lif3.com/wallet/chains/\(server.chainID)-I.svg")!)))
+            
+            subscribables[server.chainID] = sub.eraseToAnyPublisher()
+
+            return sub.eraseToAnyPublisher()
+        }
+    }
 }
 
 private func programmaticallyGeneratedIconImage(for contractAddress: AlphaWallet.Address,

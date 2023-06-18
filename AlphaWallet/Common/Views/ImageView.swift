@@ -31,7 +31,14 @@ class ImageView: UIImageView {
             .sink { [weak self] image in
                 switch image {
                 case .url(let url):
-                    self?.setImage(url: url.url, placeholder: R.image.iconsTokensPlaceholder())
+                    //self?.setImage(url: url.url, placeholder: R.image.iconsTokensPlaceholder())
+                    
+                    switch url {
+                    case .origin(let url):
+                        self?.setImage(url: url, placeholder: R.image.iconsTokensPlaceholder())
+                    default:
+                        break
+                    }
                 case .image(let image):
                     self?.image = image
                 case .none:

@@ -199,4 +199,8 @@ extension RPCServer {
     var walletConnectIconImage: ImagePublisher {
         return RPCServerImageFetcher.instance.image(server: self, iconImage: iconImage ?? R.image.tokenPlaceholderLarge()!)
     }
+    
+    var walletConnectIconImageSVG: ImagePublisher {
+        return RPCServerImageFetcher.instance.svgImage(server: self, iconImage: iconImage ?? R.image.tokenPlaceholderLarge()!)
+    }
 }

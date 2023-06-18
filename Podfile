@@ -45,6 +45,9 @@ target 'AlphaWallet' do
   pod 'WalletConnectSwift', :git => 'https://github.com/AlphaWallet/WalletConnectSwift.git', :branch => 'alphaWallet'
   pod 'Starscream', '3.1.1'
 
+  # Handle SVG Images
+  pod 'SVGKit'
+  
   target 'AlphaWalletTests' do
       inherit! :search_paths
       # Pods for testing
