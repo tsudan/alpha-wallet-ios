@@ -10,6 +10,10 @@ import AlphaWalletFoundation
 import Combine
 import Kingfisher
 
+enum ImageViewError: Error {
+    case imageReadError(error: Error)
+}
+
 class ImageView: UIImageView {
     private let subject: PassthroughSubject<ImagePublisher, Never> = .init()
     private var cancellable = Set<AnyCancellable>()
@@ -27,15 +31,14 @@ class ImageView: UIImageView {
     }
 
     private func bind() {
-        subject.flatMapLatest { $0 }
+        subject
+            .flatMapLatest { $0 }
             .sink { [weak self] image in
                 switch image {
                 case .url(let url):
-                    //self?.setImage(url: url.url, placeholder: R.image.iconsTokensPlaceholder())
-                    
                     switch url {
                     case .origin(let url):
-                        self?.setImage(url: url, placeholder: R.image.iconsTokensPlaceholder())
+                        self?.setImageWithRetry(url: url, altUrlValue: URL(string: url.absoluteString.replacingOccurrences(of: "-I.svg", with: ".svg")), placeholder: R.image.iconsTokensPlaceholder())
                     default:
                         break
                     }

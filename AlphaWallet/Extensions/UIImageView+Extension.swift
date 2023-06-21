@@ -29,4 +29,27 @@ extension UIImageView {
             image = placeholder
         }
     }
+    
+    func setImageWithRetry(url urlValue: URL?, altUrlValue: URL?, placeholder: UIImage? = .none) {
+        if let url = urlValue {
+            let resource = ImageResource(downloadURL: url)
+            var options: KingfisherOptionsInfo = []
+
+            if let value = placeholder {
+                options.append(.onFailureImage(value))
+            }
+            
+            if let altUrl = altUrlValue {
+                options.append(.alternativeSources([.network(ImageResource(downloadURL: altUrl))]))
+            }
+            
+            if url.isSVG {
+                options.append( .processor(SVGImgProcessor()))
+            }
+            
+            kf.setImage(with: resource, placeholder: placeholder, options: options)
+        } else {
+            image = placeholder
+        }
+    }
 }
